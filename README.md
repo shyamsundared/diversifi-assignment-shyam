@@ -19,9 +19,10 @@ A FastAPI backend service that fetches news headlines for stocks/tickers and pro
 ### 1. Clone the repository
 
 git clone https://github.com/shyamsundared/diversifi-assignment-shyam.git
+
 cd diversifi-assignment-shyam
 
-text
+
 
 ### 2. Create and activate a Python virtual environment
 
@@ -45,24 +46,15 @@ text
 
 ### 4. Configure environment variables
 
-Copy the example environment file and update it with your own keys:
-
-cp .env.example .env
-
-text
-
-Edit the `.env` file to set your environment-specific values, for example:
+create .env file with these keys
+I used rapidAPI for news fetching
 postrgres database URL(This is for neon db)
 DATABASE_URL=postgresql+asyncpg://<username>:<password>@<host>:<port>/<database>?ssl=require
-
-# Your Google Gemini API key for sentiment analysis
 GOOGLE_API_KEY=your_google_gemini_api_key
-
-# API key for your news source (e.g., RapidAPI)
 RAPIDAPI_KEY=your_rapidapi_key
-text
 
-> **Note:** Never commit your real API keys or secrets to public repos.
+
+
 
 ---
 
@@ -70,7 +62,7 @@ text
 
 uvicorn app.main:app --reload
 
-text
+
 
 Your API will be running at `http://localhost:8000`
 
