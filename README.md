@@ -1,6 +1,6 @@
 # News Sentiment Analysis API
 
-A FastAPI backend service that fetches news headlines for stocks/tickers and provides sentiment classification for each headline as well as an overall sentiment summary. The project uses AI-powered models to determine sentiment and stores results in a PostgreSQL database (e.g., Neon).
+A FastAPI backend service that fetches news headlines for stocks/tickers and provides sentiment classification for each headline as well as an overall sentiment summary. The project uses AI-powered models to determine sentiment and stores results in a PostgreSQL database (Neon).
 
 ---
 
@@ -30,25 +30,27 @@ cd diversifi-assignment-shyam
 python -m venv venv
 .\venv\Scripts\activate
 
-text
+
 
 **macOS/Linux**:
 python3 -m venv venv
 source venv/bin/activate
 
-text
+
 
 ### 3. Install dependencies
 
 pip install -r requirements.txt
 
-text
+
 
 ### 4. Configure environment variables
-
+copy .env.example and put in the your keys 
 create .env file with these keys
-I used rapidAPI for news fetching
+
+
 postrgres database URL(This is for neon db)
+while copying from connection string , make sure to remove the part after ssl=require.
 DATABASE_URL=postgresql+asyncpg://<username>:<password>@<host>:<port>/<database>?ssl=require
 GOOGLE_API_KEY=your_google_gemini_api_key
 RAPIDAPI_KEY=your_rapidapi_key
@@ -77,31 +79,28 @@ Build the Docker image:
 
 docker build -t news-sentiment-api .
 
-text
+
 
 Run a container with environment variables:
 
 docker run -p 8000:8000 --env-file .env news-sentiment-api
 
-text
+
 
 ---
 
-## 📰 News Source & Sentiment Analysis
+## Sentiment Analysis
 
 ### News
 
-- The app fetches news headlines using a reliable financial news API (such as RapidAPI or other aggregators).
-- Headlines are fetched based on the stock ticker symbols provided to the API.
+-I used rapiAPI to fetch news
 
 ### Sentiment Analysis
-
-- Sentiment is categorized as **positive**, **negative**, or **neutral**.
-- The sentiment is intended to reflect how news may impact stock prices shortly after publication.
+- I used gemini api as it was free.
 
 ---
 
-## 🤖 AI Tools Used
+##  AI Tools Used
 
 ### Google Gemini API (Google AI)
 
@@ -111,35 +110,30 @@ text
   > *Classify the sentiment of the following news headline about a company as "positive", "negative", or "neutral" based on how the news affects its stock price.*
 
 - Uses asynchronous HTTP calls (`httpx.AsyncClient`) to communicate with the Gemini REST API.
-- Handles API errors gracefully by defaulting to `"neutral"` sentiment if needed.
+.
 
-### Alternatives Supported or Extensible
 
-- Hugging Face Transformers models (e.g. `distilbert-base-uncased-finetuned-sst-2-english`)
-- Local sentiment analyzers such as VADER for testing or smaller workloads
-- Easily adaptable to other AI providers like Anthropic Claude, Cohere, or IBM Watson with minor changes
 
 ---
+# How I used AI tools
+I used perplexity to help me create boiler plate code for the schemas, for importing modules which were 
+making the code cleaner, took help for debugging with tricky syntax but maintained a scalable design by 
+separating the code into modules like database, logic,pydantic schema, routes .
+I also added a rate limiter for the POST request at 5 requests/min to make it more scalable.
+swagger ui was pretty helpful in debugging, I didnt need to use postman, I could hit the endpoint from /docs
 
-## 📚 Code Highlights
+
+## code details
 
 - Fully asynchronous design for efficient API calls and database operations
 - Modular code separation between news fetching, sentiment analysis, and database handling
 - Includes a Dockerfile for containerized deployment
 - Environment variables managed with `.env` for security and flexibility
+- I have added rate limiter at 5 requests. Hitting the post end point 5 times, should return 429 error saying too many requests
 
 ---
 
-## 🤝 Contributing
 
-Contributions are welcome! Feel free to open issues or submit pull requests for:
-
-- Support for additional news APIs or data sources
-- Integration with new AI/sentiment providers
-- Performance enhancements and caching strategies
-- Improved documentation or tests
-
----
 
 ## 🛡️ Security & Privacy
 
